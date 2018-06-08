@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv = "X-UA-Compatible" content ="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>{$site_info.site_name|default='大唐之声'}</title>
+    <script type="text/javascript" src="__TMPL__/public/assets/wap/js/rem.js"></script>
+    <link rel="shortcut icon" href="/static/images/favicon.ico">
+    <link rel="stylesheet" type="text/css" href="__TMPL__/public/assets/wap/css/swiper.min.css">
+    <style type="text/css">
+        body{font-family: "微软雅黑";height:100%;overflow:scroll;}
+        *{margin:0;padding:0;}
+        .fl{float: left;}
+        .re{position: relative;}
+        .fr{float: right;}
+        .cl{clear: both;}
+        .autoimg{max-width: 100%;height: auto;vertical-align: middle;}
+        ul,li{list-style: none;text-decoration: none;}
+        a,a:hover{text-decoration: none;}
+        .over_box{overflow: hidden;}
+        .mian_box{max-width:100%;margin:0 auto;}
+        .header_box h3{font-size: 0.85rem;line-height: 1.9rem;background: #e53737;color:#fff;text-align: center;}
+        .header_box h3 a{padding-right: 0.5rem;}
+        .tab_box .swiper-container{border-bottom: 1px solid #e6e6e6;}
+        .tab_box ul li{padding:0 0.75rem;font-size:0.6rem;line-height: 1.55rem;width:auto;}
+        .tab_box ul li a{color:#333}
+        .tab_box ul li.swiper-slide-active a{color:#e63737;}
+        .coupon-list li{ padding-left:12px; line-height:30px; border-bottom:1px solid #ddd;}
+        /*.iscroll-box{ position:absolute; z-index:1;top:3.5rem;bottom:0px; left:0;width:100%;overflow:auto;}*/
+        /*.iscroll-box.z-index{ z-index:80; opacity:1;}*/
+        /*.iscroll-box .scroller{position:absolute; z-index:1;-webkit-tap-highlight-color:rgba(0,0,0,0);width:100%;padding:0;}*/
+        .iscroll-box div[data-pull]{ display:block;height:44px; line-height:44px; text-align:center;color:#666;}
+        .iscroll-box div[data-pull=up]:before{ content:"上拉加载更多数据";}
+        .iscroll-box div[data-pull=up].loading:before,.iscroll-box div[data-pull=up].flip:before{content:"正在拼命加载中...";}
+        .iscroll-box div[data-pull=up].end:before{ content:"已经加载所有数据";}
+        /*.iscroll-box div[data-pull=down]:before{content:"下拉更新数据";}*/
+        /*.iscroll-box div[data-pull=down].loading:before,.iscroll-box div[data-pull=down].flip:before{content:"正在更新中...";}*/
+        .list_box .big_pic{width: 4.35rem;display: block;margin-right:0.5rem;height: 3rem;overflow: hidden}
+        .list_box li{overflow: hidden;padding:0.5rem;}
+        .list_box li h4{font-size:0.65rem;line-height: 1.5;color:#333;}
+        .list_box li a span{font-size: 0.5rem;color:#999899;line-height: 1.1;padding-left: 0.25rem;}
+        .text-center{ text-align: center;}
+        .h_box{position:fixed;top:0;width:100%;left: 0;z-index: 9999}
+        .tab_box{background:#fff;}
+        .list_box{padding-top:3.478rem;}
+        .c_ccc{    color: #ccc;}
+        .time{position: absolute;bottom: 0;    left: 4.8rem;}
+        .clearfix:after {
+            content: ".";     /*内容为“.”就是一个英文的句号而已。也可以不写。*/
+            display: block;   /*加入的这个元素转换为块级元素。*/
+            clear: both;     /*清除左右两边浮动。*/
+            visibility: hidden;      /*可见度设为隐藏。注意它和display:none;是有区别的。visibility:hidden;仍然占据空间，只是看不到而已；*/
+            line-height: 0;    /*行高为0；*/
+            height: 0;     /*高度为0；*/
+            font-size:0;    /*字体大小为0；*/
+        }
+        .clearfix { *zoom:1;}   /*这是针对于IE6的，因为IE6不支持:after伪类，这个神奇的zoom:1让IE6的元素可以清除浮动来包裹内部元素。*/
+        .coupon-list >li >a{
+            display: block;}
+    </style>
+</head>
+<body>
+<div class="mian_box">
+        <div class="h_box">
+            <div class="header_box">
+                <h3 class="over_box">大唐之声</h3>
+            </div>
+            <div class="tab_box">
+                <div class="swiper-container">
+                    <ul class="swiper-wrapper">
+                        <li class="swiper-slide" data-catid="0"><a href="#">推荐</a></li>
+                        <foreach name="cate" item="vo">
+                            <li class="swiper-slide" data-catid="{$vo.id}"><a href="#">{$vo.name}</a></li>
+                        </foreach>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="list_box" id="list_box">
+            <div class="iscroll-box" data-index="0" data-page="{$page}">
+                <div class="scroller">
+                    <ul class="coupon-list clearfix">
+                        <foreach name="list" item="vo">
+                            <li>
+                                <a href="/detail/{$vo.id}">
+                                    <div class="clearfix re">
+                                        <div class="fl big_pic">
+                                            <img src="{$vo.image}" class="autoimg" alt="">
+                                        </div>
+                                        <h4>{$vo.post_title}</h4>
+                                        <span class="time c_ccc">{$vo.published_time}</span>
+                                    </div>
+                                </a>
+                            </li>
+                        </foreach>
+                    </ul>
+                    <div data-pull="up"></div>
+                </div>
+            </div>
+        </div>
+</div>
+<script type="text/javascript" src="__TMPL__/public/assets/wap/js/jquery.min.js"></script>
+<script type="text/javascript" src="__TMPL__/public/assets/wap/js/swiper.3.1.7.min.js"></script>
+<script type="text/javascript" src="__TMPL__/public/assets/wap/js/jquery.mobile-events.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        var mySwiper = new Swiper('.swiper-container',{
+            //    slideToClickedSlide:true,
+            slidesPerView :'auto',
+        });
+//        initfn()
+    });
+
+        $('#list_box').on('scrollend', function(e, touch){
+            var pullUpEl =  $("div[data-pull=up]");
+
+            if(pullUpEl.hasClass("end")) return false;
+            if($(document).height() - $('body').scrollTop() <= $(window).height()){ //
+                $('#page-loading').css("display","block");
+                var scrollTop = $('body')[0].scrollHeight;
+                $('body').animate({ scrollTop: scrollTop + "px" }, function(){
+                    var index =$(".iscroll-box").attr('data-index');  //数据id
+                    var page =$(".iscroll-box").attr('data-page');  //数据id
+                    ajaxdata(index,page,2)
+                });
+            }
+        });
+
+    $('.swiper-wrapper').find('li').click(function () {
+        var _this =$(this);
+        var catid =_this.data('catid');
+        _this.addClass('swiper-slide-active').siblings().removeClass('swiper-slide-active');
+        $('.iscroll-box').attr('data-index',catid);
+     //   ajaxdata(catid,1,1);
+
+        initfn(catid)
+    });
+
+    function pagelist(data) {
+        var li_html="";
+        if (data.code==200){
+            var data =data.list;
+            for (i=0; i<data.length; i++) {
+                li_html+='<li><a href="/detail/'+data[i].id+'"><div class="clearfix re"><div class="fl big_pic"><img src="'+data[i].image+'"  class="autoimg" alt=""></div><h4>'+data[i].post_title+'</h4><span class="time c_ccc">'+data[i].published_time+'</data></span><!--<a href="javascript:void(0);" class="fr"><img src="__TMPL__/public/assets/wap/img/p2.png" class="autoimg" alt=""><span>288</span></a>--></div></a></li>';
+            }
+        }
+        return li_html;
+    }
+
+    function ajaxdata(catid,page,listtype) {
+        var $list =$("#list_box").find('.coupon-list');
+        var count = $('.iscroll-box').attr('data-count');
+        $.ajax({
+            type:'get',
+            url:"{:url('/portal/wap/ajaxlist')}",
+            data:{cid:catid,page:page},
+            beforeSend:function () {
+                $("div[data-pull=up]").addClass('loading');
+            },
+            success:function(msg){
+                if (msg.code==200){
+                    $('.iscroll-box').attr('data-page',msg.page);
+                    $('.iscroll-box').attr('data-count',msg.count);
+                }
+                li_html = pagelist(msg);
+                if (listtype==1){
+//                    if (count==msg.count){
+//                        return false;
+//                    }
+                    $list.html(li_html);
+                }else {
+                    $(li_html).appendTo($list);
+                }
+                if(msg.switchs){			//后台返回：msg.switchs 布尔值。判断是否达到最后一页数据
+                //    $('.coupon-list').html("<div>已无数据</div>");
+                    $("div[data-pull=up]").addClass('end');
+                }else {
+                    $("div[data-pull=up]").removeClass('end');
+                }
+            },
+            complete:function () {
+                $("div[data-pull=up]").removeClass('loading');
+            },
+            error: function(){
+                console.log("ajax错误")
+            }
+        })
+    }
+//
+    function initfn(catid){
+        ajaxdata(catid,1,1);
+    }
+
+</script>
+<div style="display: none"><script src="https://s19.cnzz.com/z_stat.php?id=1263613477&web_id=1263613477" language="JavaScript"></script></div>
+</body>
+</html>

@@ -1,0 +1,280 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv = "X-UA-Compatible" content ="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>{$article.post_title}-{$site_info.site_name|default='大唐之声'}</title>
+    <script type="text/javascript" src="__TMPL__/public/assets/wap/js/rem.js?v={:config('app_version')}"></script>
+    <link rel="shortcut icon" href="/static/images/favicon.ico">
+    <link rel="stylesheet" type="text/css" href="__TMPL__/public/assets/wap/css/swiper.min.css?v={:config('app_version')}">
+    <link rel="stylesheet" href="/static/nativeShare/nativeShare.css?v={:config('app_version')}" />
+    <link rel="stylesheet" href="__TMPL__/public/assets/wap/css/index.css" />
+
+    <style type="text/css">
+        body{font-family: "微软雅黑";}
+        *{margin:0;padding:0;}
+        .fl{float: left;}
+        .fr{float: right;}
+        .cl{clear: both;}
+        .autoimg{max-width: 100%;height: auto;vertical-align: middle;}
+        ul,li{list-style: none;text-decoration: none;}
+        a,a:hover{text-decoration: none;}
+        .over_box{overflow: hidden;}
+        .mian_box{max-width:100%;margin:0 auto;overflow: hidden;}
+        .header_box{position: fixed;width: 100%;z-index: 9999;}
+        .header_box h3{font-size: 0.85rem;line-height: 1.9rem;background: #e53737;color:#fff;text-align: center;}
+        .header_box h3 a.detail{padding-left: 0.5rem;}
+        .title_box{padding:0.5rem;margin-top: 1.9rem;}
+        .title_box h4{font-size:0.9rem;line-height: 1.6;color:#333;}
+        .time_box{background: #f5f5f5;overflow: hidden;padding:0.4rem 0.5rem;color: #999;}
+        .time_box a{display: block;width: 1.115rem;height: 1.115rem;border-radius: 0.55rem;margin-right: 0.5rem;overflow: hidden;}
+        .time_box a img{width: 100%;height: 100%;}
+        .time_box h5{font-size: 0.6rem;line-height: 1.115rem;color:#999;font-style: normal;}
+        .time_box h5 span{color:#666;padding-right:0.25rem;}
+        .voide_box{text-align: center;padding:0.6rem 0.5rem;}
+        .text_box{font-size: 0.7rem;color:#333;line-height:1.7;padding:0.6rem 0.5rem;}
+        .emit_box{font-size: 0.6rem;line-height: 2;color:#999999;padding:0.6rem 0.5rem;}
+        .comment_box{background: #f5f5f5;padding:0.6rem 0.5rem;overflow:hidden;position: fixed;left:0;width: 100%;bottom:0;right:0;}
+        .comment_box input{width: 10.475rem;height: 1.35rem;border-radius: 0.75rem;border:0;}
+        .comment_box a.comm img{display: inline-block;width: 0.75rem;padding-left:0.75rem;}
+        .comment_box a.comm span{padding-left:0.25rem;color:#e53737;font-size: 0.5rem;}
+        .comment_box a.share{display: inline-block;width: 0.65rem;padding-left: 0.25rem;}
+        #content  img{
+            display:block;margin:0 auto;padding:10px; max-width:600px;height: auto;
+        }
+        /*以下为兼容手机代码*/
+        @media(max-width:760px){
+            #content  img{max-width: 95%;height: auto;width: auto\9;}
+        }
+        .clearfix:after {
+            content: ".";     /*内容为“.”就是一个英文的句号而已。也可以不写。*/
+            display: block;   /*加入的这个元素转换为块级元素。*/
+            clear: both;     /*清除左右两边浮动。*/
+            visibility: hidden;      /*可见度设为隐藏。注意它和display:none;是有区别的。visibility:hidden;仍然占据空间，只是看不到而已；*/
+            line-height: 0;    /*行高为0；*/
+            height: 0;     /*高度为0；*/
+            font-size:0;    /*字体大小为0；*/
+        }
+        .clearfix { *zoom:1;}   /*这是针对于IE6的，因为IE6不支持:after伪类，这个神奇的zoom:1让IE6的元素可以清除浮动来包裹内部元素。*/
+        .coupon-list >li >a{
+            display: block;}
+
+        .share {
+            background: url(/static/nativeShare/icon/shareicon.png) no-repeat;
+            width: 17px;
+            height: 17px;
+            background-size: 17px 17px;
+            margin-top: 13px;
+            position: absolute;
+            right: 14px;
+            top: 0px;
+        }
+
+
+    </style>
+</head>
+<body>
+<div class="mian_box">
+    <div class="header_box">
+        <h3 class="over_box"><a href="/" class="fl detail"><img src="__TMPL__/public/assets/wap/img/go_1.png" alt="" style="padding-top: 5px;" height="17"></a><div class="share" id="share"></div></h3>
+    </div>
+    <div class="title_box">
+        <h4>{$article.post_title}</h4>
+    </div>
+    <div class="time_box clearfix">
+        <!--<a href="#" class="fl"><img src="__TMPL__/public/assets/wap/img/p1.png" class="autoimg" alt=""></a>-->
+        <span><span>{$article.post_source}</span>&nbsp;&nbsp;      {:date('Y-m-d H:i',$article.published_time)}  <span class="fr">浏览量：{$article.post_hits}</span></span>
+    </div>
+    <!--<div class="voide_box">
+        <img src="__TMPL__/public/assets/wap/img/p3.png" class="autoimg" alt="">
+    </div>-->
+    <div class="text_box" id="content">
+        {$article.post_content}
+    </div>
+    <div style="padding-left: 10px;">
+
+        <!--<div class="bdsharebuttonbox" data-tag="share_1">-->
+        <!--<a class="bds_more" data-cmd="more"></a>-->
+        <!--<a class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a>-->
+        <!--<a class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>-->
+        <!--<a class="bds_tqq" data-cmd="tqq" title="分享到腾讯微博"></a>-->
+        <!--<a class="bds_renren" data-cmd="renren" title="分享到人人网"></a>-->
+        <!--<a class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>-->
+
+        <!--</div>-->
+        <!--<script>-->
+        <!--window._bd_share_config = {-->
+        <!--common : {-->
+        <!--bdText : "{$article['post_title']}",-->
+        <!--bdDesc : '',-->
+        <!--bdUrl : "https://dtzs.dttx.com/detail/{$article.id}",-->
+        <!--bdPic : 'https://dtzs.dttx.com/upload/{$article.more.thumbnail}',-->
+        <!--},-->
+        <!--share : [{-->
+        <!--"bdSize" : 32-->
+        <!--}]-->
+        <!--}-->
+        <!--with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];-->
+        <!--</script>-->
+    </div>
+    <section class="screenW">
+        <div class="subW">
+            <div class="info">
+                <div class="shareBox">
+                    <div class="bdsharebuttonbox"  style="margin-top: 10px;">
+                        <a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间">QQ空间</a>
+                        <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博">新浪微博</a>
+                        <a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友">QQ</a>
+                        <a href="#" class="bds_tqq" data-cmd="tqq" title="分享到腾讯微博">腾讯微博</a>
+                        <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信">微信</a>
+                    </div>
+                    <div class="bdsharebuttonbox">
+                        <a href="#" onclick="return false;" class="popup_more" data-cmd="more"></a>
+                    </div>
+                </div>
+            </div>
+            <div class="close">关闭</div>
+        </div>
+    </section>
+    <!--<p class="emit_box">责任编辑：{$article.user.user_nickname}</p>-->
+    <p class="emit_box">责任编辑：大唐之声</p>
+    <notempty name="prev_article.post_title">
+    <p style="margin-bottom:5px;">
+        <a href="/detail/{$prev_article.id}" style="color: #000;margin-left: 10px;padding: 10px 0;display: block;">上一条：{$prev_article.post_title}</a>
+    </p>
+    </notempty>
+    <notempty name="next_article.post_title" >
+    <p style="margin:5px 0px 10px 0px;">
+        <a href="/detail/{$next_article.id}" style="color: #000;margin-left: 10px;padding: 10px 0;display: block;">下一条：{$next_article.post_title}</a>
+    </p>
+    </notempty>
+    <php>
+        $comment_hook_param=[
+        'post_id'=>$article['id'],
+        'post_table'=>'portal_post',
+        'post_title'=>$article['post_title']
+        ];
+        $comment=hook_one('comment',$comment_hook_param);
+    </php>
+    {$comment}
+</div>
+<script type="text/javascript" src="__TMPL__/public/assets/wap/js/jquery.min.js?v={:config('app_version')}"></script>
+<script type="text/javascript" src="/static/layer_mobile/layer.js?v={:config('app_version')}"></script>
+<script type="text/javascript" src="/static/nativeShare/nativeShare.js?v={:config('app_version')}"></script>
+<script src="__TMPL__/public/assets/wap/js/zepto.min.js"></script>
+<script>
+    //页面层
+    $('#share').click(function () {
+		var UA = navigator.appVersion.toLowerCase();
+		var isqqBrowser = (UA.split("mqqbrowser/").length > 1) ? true : false;
+		var isucBrowser = (UA.split("ucbrowser/").length > 1) ? true : false;
+		var isWeiXinBrowser = (UA.split("micromessenger/").length > 1) ? true : false;
+		var content ="";
+		
+		if ((isqqBrowser && !isWeiXinBrowser) || isucBrowser) {
+            content='<div id="nativeShare"></div>';
+            layer.open({
+                type: 1
+                ,content: content
+                ,anim: 'up'
+                ,style: 'position:fixed; bottom:0; left:0; width: 100%; height: 200px; padding:10px 0; border:none;'
+            });
+            var config = {
+                url:"https://dtzs.dttx.com/detail/{$article.id}",
+                title:"{$article['post_title']}",
+                desc:"{$article['post_title']}",
+                img:'https://dtzs.dttx.com/upload/{$article.more.thumbnail}',
+                img_title:"{$article['post_title']}",
+                from:'大唐之声'
+            };
+            var share_obj = new nativeShare('nativeShare',config);
+        }else {
+            var goodsDetail = {
+                node: {
+                    closeBtn: $('.close'),
+                    screenW: $('.screenW'),
+                    subW: $('.subW'),
+                    share: $('#share'),
+                    shareBox: $('.shareBox')
+                },
+                /*入口*/
+                init: function() {
+                    var self = this;
+                    self.closeTap();
+                    self.shareTap();
+                },
+                /*分享点击弹窗*/
+                shareTap: function() {
+                    var self = this;
+                    self.node.share.on('tap', function() {
+                        self.wShow();
+                        self.node.shareBox.show().siblings().hide();
+                    });
+                },
+                /*点击关闭弹窗*/
+                closeTap: function() {
+                    var self = this;
+                    self.node.closeBtn.on('tap', function() {
+                        self.wHide();
+                    });
+                },
+                /*窗口显示*/
+                wShow: function() {
+                    var self = this;
+                    self.node.screenW.show();
+                    self.node.subW.addClass('move').removeClass('back');
+                },
+                /*窗口隐藏*/
+                wHide: function() {
+                    var self = this;
+                    self.node.subW.addClass('back').removeClass('move');
+                    setTimeout(function() {
+                        self.node.screenW.hide();
+                    }, 500);
+                }
+            };
+            /*商品js入口*/
+            goodsDetail.init();
+
+            /*百度分享js*/
+            window._bd_share_config = {
+                common: {
+                    bdText: "{$article['post_title']}",
+                    bdDesc: '',
+                    bdUrl : "https://dtzs.dttx.com/detail/{$article.id}",
+                    bdPic : "https://dtzs.dttx.com/upload/{$article.more.thumbnail}",
+                },
+                share: {},
+                image: {
+                    "viewList": ["qzone", "tsina", "sqq", "tqq", "weixin"],
+                    "viewText": "分享到：",
+                    "viewSize": "16"
+                },
+                selectShare: {
+                    "bdContainerClass": null,
+                    "bdSelectMiniList": ["qzone", "tsina", "sqq", "tqq", "weixin"]
+                }
+            };
+            with(document) 0[(getElementsByTagName('head')[0] || body).appendChild(createElement('script')).src = 'http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion=' + ~(-new Date() / 36e5)];
+        }
+    })
+    $('#content img').css({'max-width':'', 'width':'100%'});
+</script>
+<script>
+    (function(){
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        }
+        else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+<div style="display: none"><script src="https://s19.cnzz.com/z_stat.php?id=1263613477&web_id=1263613477" language="JavaScript"></script></div>
+</body>
+</html>

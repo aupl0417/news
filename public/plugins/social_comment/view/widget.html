@@ -1,0 +1,27 @@
+<switch name="comment_type">
+	<case value="1">
+		<eq name="display" value="0">
+			<style type="text/css">
+				.module-cmt-notice{
+					display: none !important;
+				}
+			</style>
+		</eq>
+
+		<!--WAP版-->
+		<div id="SOHUCS" sid="{$post_id}" ></div>
+		<script id="changyan_mobile_js" charset="utf-8" type="text/javascript"
+				src="https://changyan.sohu.com/upload/mobile/wap-js/changyan_mobile.js?client_id={$appid}&conf={$conf}">
+		</script>
+
+
+
+	</case>
+	<case value="2">
+		<!-- UY BEGIN -->
+		<div id="uyan_frame"></div>
+		<script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js?uid={$comment_uid_youyan}"></script>
+		<!-- UY END -->
+	</case>
+
+</switch>

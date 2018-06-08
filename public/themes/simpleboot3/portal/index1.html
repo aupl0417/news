@@ -1,0 +1,265 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv = "X-UA-Compatible" content ="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="keywords" content="{$site_info.site_seo_keywords|default=''}"/>
+    <meta name="description" content="{$site_info.site_seo_description|default=''}">
+    <title>{$site_info.site_name|default='大唐之声'}</title>
+    <script type="text/javascript" src="__TMPL__/public/assets/wap/js/rem.js"></script>
+    <link rel="stylesheet" type="text/css" href="__TMPL__/public/assets/wap/css/swiper.min.css">
+    <style type="text/css">
+        body{font-family: "微软雅黑";}
+        *{margin:0;padding:0;}
+        .fl{float: left;}
+        .fr{float: right;}
+        .cl{clear: both;}
+        .autoimg{max-width: 100%;height: auto;vertical-align: middle;}
+        ul,li{list-style: none;text-decoration: none;}
+        a,a:hover{text-decoration: none;}
+        .over_box{overflow: hidden;}
+        .mian_box{max-width: 640px;margin:0 auto;}
+        .header_box h3{font-size: 0.85rem;line-height: 1.9rem;background: #e53737;color:#fff;text-align: center;}
+        .header_box h3 a{padding-right: 0.5rem;}
+        .tab_box .swiper-container{border-bottom: 1px solid #e6e6e6;}
+        .tab_box ul li{padding:0 0.75rem;font-size:0.6rem;line-height: 1.55rem;width:auto;}
+        .tab_box ul li a{color:#333}
+        .tab_box ul li.swiper-slide-active a{color:#e63737;}
+        .coupon-list li{ padding-left:12px; line-height:30px; border-bottom:1px solid #ddd;}
+        .iscroll-box{ position:absolute; z-index:1;top:3.5rem;bottom:0px; left:0;width:100%;overflow:auto;}
+        .iscroll-box.z-index{ z-index:80; opacity:1;}
+        .iscroll-box .scroller{position:absolute; z-index:1;-webkit-tap-highlight-color:rgba(0,0,0,0);width:100%;padding:0;}
+        .iscroll-box div[data-pull]{ display:block;height:44px; line-height:44px; text-align:center;color:#666;}
+        .iscroll-box div[data-pull=up]:before{ content:"上拉加载更多数据";}
+        .iscroll-box div[data-pull=up].loading:before,.iscroll-box div[data-pull=up].flip:before{content:"正在拼命加载中...";}
+        .iscroll-box div[data-pull=up].end:before{ content:"已经加载所有数据";}
+        .iscroll-box div[data-pull=down]:before{content:"下拉更新数据";}
+        .iscroll-box div[data-pull=down].loading:before,.iscroll-box div[data-pull=down].flip:before{content:"正在更新中...";}
+        .list_box .big_pic{width: 4.35rem;display: block;margin-right:0.5rem;}
+        .list_box li{overflow: hidden;padding:0.5rem;}
+        .list_box li h4{font-size:0.65rem;line-height: 1.5;color:#333;}
+        .list_box li a span{font-size: 0.5rem;color:#999899;line-height: 1.1;padding-left: 0.25rem;}
+    </style>
+</head>
+<body>
+<div class="mian_box">
+    <div class="header_box">
+        <h3 class="over_box" ><a href="javasrcript:void(0);" class="fr"></a>大唐之声</h3>
+    </div>
+    <div class="tab_box">
+        <div class="swiper-container">
+            <ul class="swiper-wrapper">
+                <li class="swiper-slide" data-url="{:cmf_url('portal/index/index', ['cid' => 1])}" data-id="1"><a href="#">推荐</a></li>
+                <foreach name="categories" item="vo">
+                    <li class="swiper-slide" data-url="{:cmf_url('portal/index/index', ['cid' => $vo.id])}" data-id="{$vo.id}"><a href="#">{$vo.name}</a></li>
+                </foreach>
+            </ul>
+        </div>
+    </div>
+    <div class="list_box">
+        <div class="iscroll-box" data-id="{$cid}" data-index="{$cid}">
+            <div class="scroller">
+                <div data-pull="down"></div>
+                <ul class="coupon-list clearfix">
+                    <foreach name="article" item="vo">
+                        <li class="article_list" data-url="{:cmf_url('portal/index/detail',array('id'=>$vo.id,'cid'=>$vo.category_id))}">
+                            <div>
+                                <a href="{:url('portal/index/detail', ['id' => $vo.id])}" class="fl big_pic external"><img src="/upload/{$vo.more.thumbnail}" class="autoimg" alt=""></a>
+                                <h4>{$vo.post_title}</h4>
+                                <a href="javascript:void(0);"><img src="__TMPL__/public/assets/wap/img/p2.png" class="autoimg" alt=""><span>{$vo.comment_count}</span></a>
+                            </div>
+                        </li>
+                    </foreach>
+                </ul>
+                <div data-pull="up"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="__TMPL__/public/assets/wap/js/jquery.min.js"></script>
+<script type="text/javascript" src="__TMPL__/public/assets/wap/js/swiper.3.1.7.min.js"></script>
+<script src="__TMPL__/public/assets/wap/js/iscroll.min.js"></script>
+<script type="text/javascript">
+    var mySwiper = new Swiper('.swiper-container',{
+        watchSlidesProgress : true,
+        watchSlidesVisibility : true,
+        slidesPerView : "auto"
+    });
+    var myScroll=[],pullUpEl,pullDownEl,pullUpOffset=0,pullDownOffset=0,pullUpLabel,_myScroll;
+    var coupon_obj = {
+        num    : "{$pageSize}",
+        update : true
+    };
+    var generatedCount = 1;
+
+    $('.article_list').live('click', function () {
+        window.location.href = window.location.origin + $(this).data('url')
+    });
+
+    // 下拉更新回调
+    var pullDownAction = function(_myScroll, id){
+//        setTimeout(function () {
+//            _myScroll.refresh();				//重置滚动条，隐藏顶部data-pull="down"文本
+//        },1000)
+        id    = $(".iscroll-box").attr('id');  //数据id
+        pullUpEl=$("#"+id).find("div[data-pull=up]");
+        if(pullUpEl.hasClass("end")) return false;
+        setTimeout(function () {
+            var index = $('#' + id).attr('data-id');
+            getAjaxData(_myScroll, id, index, 1);
+        }, 1000);
+    }
+
+    // 上拉加载回调
+    var pullUpAction=function(_myScroll,id) {
+        generatedCount ++;//计算有效拉动次数
+        id    = $(".iscroll-box").attr('id');  //数据id
+        pullUpEl=$("#"+id).find("div[data-pull=up]");
+        if(pullUpEl.hasClass("end")) return false;
+        setTimeout(function () {
+//            var index = $('#' + id).attr('data-id');
+//            getAjaxData(_myScroll, id, index, generatedCount);
+        }, 1000);
+    }
+
+    var myScroll_init=function(id){
+        pullDownEl   = $("#"+id).find("div[data-pull=down]");
+        pullUpEl     = $("#"+id).find("div[data-pull=up]");
+        pullUpOffset = pullUpEl.innerHeight();
+        coupon_obj.update ? pullDownOffset = pullDownEl.innerHeight() : pullDownEl.hide();
+
+        myScroll[id] = new iScroll(id, {
+            useTransition: true,
+            topOffset: pullDownOffset,
+
+
+            btnOffset: pullUpOffset,
+            hideScrollbar: true,
+            fadeScrollbar: true,
+
+            onRefresh: function () {
+                if (pullDownEl.hasClass('loading')) {
+                    pullDownEl.removeAttr("class");
+                }else if (pullUpEl.hasClass('loading')) {
+                    pullUpEl.removeAttr("class");
+                }
+            },
+            onScrollMove: function () {
+                this.maxScrollY = this.maxScrollY;
+                if (this.y > 5 && !pullDownEl.hasClass('flip')) {
+                    if(!coupon_obj.update) return false;
+                    pullDownEl.removeAttr("class").addClass("flip");
+                    this.minScrollY = 0;
+                }else if(this.y < 5 && pullDownEl.hasClass('flip')) {
+                    if(!coupon_obj.update) return false;
+                    pullDownEl.removeAttr("class");
+                    this.minScrollY = -pullDownOffset;
+                    return false;
+                }else if(this.y < (this.maxScrollY - 5) && !pullUpEl.hasClass('flip') && this.y<-pullDownOffset) {
+                    if(pullUpEl.hasClass("end")) return false;
+                    pullUpEl.removeAttr("class").addClass('flip');
+                    this.maxScrollY = this.maxScrollY;
+                } else if(this.y > (this.maxScrollY + 5) && pullUpEl.hasClass('flip') && this.y<-pullDownOffset) {
+                    pullUpEl.removeAttr("class");
+                    this.maxScrollY = pullUpOffset;
+                }
+
+            },
+            onScrollEnd: function () {
+                if (pullDownEl.hasClass('flip')) {
+                    if(!coupon_obj.update) return false;
+                    pullDownEl.removeAttr("class").addClass('loading');
+                    pullDownAction(myScroll[id],id);									// 下拉更新回调
+                }else if (pullUpEl.hasClass('flip')) {
+                    if(pullUpEl.hasClass("end")) return false;
+                    pullUpEl.removeAttr("class").addClass("loading");
+                    pullUpAction(myScroll[id],id);									   // 上拉加载回调
+                }
+            }
+        });
+    }
+
+    $(".iscroll-box").each(function(index) {
+        var _id = "iscroll-box"+$(this).attr("data-index");
+        $(this).attr("id", _id);
+        myScroll_init(_id)
+    });
+
+    $('.swiper-slide').each(function () {
+        var $this = $(this);
+        $this.on('click', function () {
+            generatedCount = 1;
+            $this.find("a").css("color","red");
+            $this.siblings().find("a").css("color","#333");
+
+            var cid = $this.data('id');
+            var id  = "iscroll-box" + cid;
+
+            $('.iscroll-box').attr('data-id', cid);
+            $('.iscroll-box').attr('data-index', cid);
+            $('.iscroll-box').attr('id', id);
+
+            myScroll_init(id);
+            getData(id, cid, $this.data('url'));
+        });
+    });
+
+    function getAjaxData(_myScroll, id, cid, generatedCount) {
+        var $list   =$("#"+id).find('.coupon-list');
+        var li_html = '';
+        $.ajax({
+            type:'get',
+            url:'{:url("portal/index/index", [], false)}/page/' + generatedCount + '/cid/' + cid + '.html',
+            success:function(msg){
+                if(msg.data.length == 0){
+                    generatedCount --;
+                    return false;
+                }
+                for(var i=0;i<coupon_obj.num;i++){
+                    if( typeof(msg.data[i]) != "undefined"){   //判断单个json是否存在
+                        li_html += '<li class="article_list" data-url="/portal/index/detail/id/' + msg.data[i].id + '/cid/' + msg.data[i].category_id + '"><div><a href="" class="fl big_pic external"><img src="/upload/' + msg.data[i].more.thumbnail +'" class="autoimg" alt=""></a><h4> ' + msg.data[i].post_title + '</h4><a href="javascript:void(0);"><img src="__TMPL__/public/assets/wap/img/p2.png" class="autoimg" alt=""><span>' + msg.data[i].comment_count + '</span></a></div></li>';
+                    }
+                }
+                if(generatedCount == 1){
+                    $list.html('');
+                }
+                $(li_html).appendTo($list);  //插入列表
+                _myScroll.refresh();	//重新计算滚动条
+
+                if(msg.switchs){			//后台返回：msg.switchs 布尔值。判断是否达到最后一页数据
+                    pullUpEl.addClass("end");
+                }
+            }
+        });
+    }
+
+    function getData(id, cid, url) {
+        var $list   = $("#"+id).find('.coupon-list');
+        var li_html = '';
+
+        $.ajax({
+            type : 'get',
+            url  : url,
+            success:function(msg){
+                $list.html('');
+                if(msg.data.length > 0){
+                    for(var i=0;i<coupon_obj.num;i++){
+                        if( typeof(msg.data[i]) != "undefined"){   //判断单个json是否存在
+                            li_html += '<li class="article_list" data-url="/portal/index/detail/id/' + msg.data[i].id + '/cid/' + msg.data[i].category_id + '"><div><a href="" class="fl big_pic external"><img src="/upload/' + msg.data[i].more.thumbnail +'" class="autoimg" alt=""></a><h4> ' + msg.data[i].post_title + '</h4><a href="javascript:void(0);"><img src="__TMPL__/public/assets/wap/img/p2.png" class="autoimg" alt=""><span>' + msg.data[i].comment_count + '</span></a></div></li>';
+                        }
+                    }
+                }
+                $(li_html).appendTo($list);  //插入列表
+                if(msg.switchs){			//后台返回：msg.switchs 布尔值。判断是否达到最后一页数据
+                    pullUpEl.addClass("end");
+                }
+
+            }
+        });
+    }
+
+    document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);
+</script>
+</body>
+</html>
